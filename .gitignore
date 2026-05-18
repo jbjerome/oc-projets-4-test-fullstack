@@ -1,0 +1,11 @@
+# Environment
+.env
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+
+# System files
+.DS_Store
+Thumbs.db
