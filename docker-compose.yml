@@ -47,6 +47,15 @@ services:
       - backend
     ports:
       - "4200:4200"
+    volumes:
+      - ./front/src:/app/src
+      - ./front/jest.config.js:/app/jest.config.js
+      - ./front/setup-jest.ts:/app/setup-jest.ts
+      - ./front/tsconfig.json:/app/tsconfig.json
+      - ./front/tsconfig.app.json:/app/tsconfig.app.json
+      - ./front/tsconfig.spec.json:/app/tsconfig.spec.json
+      - ./front/angular.json:/app/angular.json
+      - ./front/coverage:/app/coverage
 
 volumes:
   mysql_data:

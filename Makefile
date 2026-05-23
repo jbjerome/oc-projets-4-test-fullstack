@@ -1,4 +1,4 @@
-.PHONY: up rebuild down logs ps build restart seed clean prune ng-build
+.PHONY: up rebuild down logs ps build restart seed clean prune ng-build test-frontend test-frontend-coverage
 
 up:
 	docker compose up -d
@@ -30,6 +30,14 @@ seed:
 
 ng-build:
 	docker compose exec -T frontend npx ng build
+
+test-frontend:
+	docker compose exec -T frontend npm test -- --watch=false
+
+test-frontend-coverage:
+	docker compose exec -T frontend npx jest --watch=false --coverage
+	@echo ""
+	@echo "  HTML report: front/coverage/jest/lcov-report/index.html"
 
 prune:
 	docker image prune -f
