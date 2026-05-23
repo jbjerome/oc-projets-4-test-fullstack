@@ -1,4 +1,4 @@
-.PHONY: up rebuild down logs ps build restart seed clean prune
+.PHONY: up rebuild down logs ps build restart seed clean prune ng-build
 
 up:
 	docker compose up -d
@@ -27,6 +27,9 @@ ps:
 
 seed:
 	docker compose exec -T mysql sh -c 'mysql --force -u"$$MYSQL_USER" -p"$$MYSQL_PASSWORD" "$$MYSQL_DATABASE"' < back/src/main/resources/sql/insert_user.sql
+
+ng-build:
+	docker compose exec -T frontend npx ng build
 
 prune:
 	docker image prune -f
