@@ -20,6 +20,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().build();
     }
 
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<Void> handleUnauthorized(UnauthorizedException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
     @ExceptionHandler({NumberFormatException.class, MethodArgumentTypeMismatchException.class})
     public ResponseEntity<MessageResponse> handleInvalidPathParam(Exception ex) {
         return ResponseEntity.badRequest().body(new MessageResponse("Invalid path parameter"));
