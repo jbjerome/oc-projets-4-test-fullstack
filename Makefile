@@ -1,4 +1,6 @@
-.PHONY: up rebuild down logs ps build restart seed clean prune ng-build test-frontend test-frontend-coverage
+.PHONY: up rebuild down logs ps build restart seed clean prune ng-build test-frontend test-frontend-coverage test-e2e test-e2e-down
+
+E2E_COMPOSE := docker compose -f docker-compose.yml -f docker-compose.e2e.yml
 
 up:
 	docker compose up -d
@@ -38,6 +40,15 @@ test-frontend-coverage:
 	docker compose exec -T frontend npx jest --watch=false --coverage
 	@echo ""
 	@echo "  HTML report: front/coverage/jest/lcov-report/index.html"
+
+test-e2e:
+	$(E2E_COMPOSE) --profile e2e up --build --abort-on-container-exit --exit-code-from cypress
+	$(E2E_COMPOSE) --profile e2e down
+	@echo ""
+	@echo "  HTML report: front/coverage/lcov-report/index.html"
+
+test-e2e-down:
+	$(E2E_COMPOSE) --profile e2e down -v
 
 prune:
 	docker image prune -f

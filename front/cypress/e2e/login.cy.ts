@@ -24,4 +24,6 @@ describe('Login spec', () => {
 
     cy.url().should('include', '/sessions')
   })
+
+
 });

@@ -1,0 +1,25 @@
+oc:
+  app:
+    jwtExpirationMs: 3600000
+    # Secret base64 ≥ 512 bits requis par HS512 (jjwt 0.12.x) - usage tests uniquement
+    jwtSecret: dW5pdC1hbmQtaW50ZWdyYXRpb24tdGVzdC1zaWduaW5nLWtleS0wMTIzNDU2Nzg5LWFiY2RlZmdoaWprbG1ub3A=
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password: ''
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+  application:
+    name: back
+logging:
+  level:
+    org:
+      hibernate: warn
+      springframework: warn
+    com:
+      openclassrooms: info
