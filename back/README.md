@@ -1,176 +1,73 @@
-# Yoga App !
+# Yoga App — Backend
 
-Backend de l'application Yoga App !.
+Backend de l'application Yoga App (Spring Boot 3.5.5, Java 21).
 
+- name : back
+- port : 8080
 
-## Configuration du back
+## Prérequis
 
-    - name: back
-    - port: 8080
+- **Docker** et **Docker Compose**
+- **Make**
 
-## Pré-requis pour le bon fonctionnement du back :
+Tout (build, exécution, tests) passe par Docker via le `Makefile` situé à la racine du dépôt :
+aucune installation locale de JDK ni de Maven n'est nécessaire.
 
-    -> JDK 21
-    -> Docker
-    -> Docker Compose
-    -> Maven 3.9.3 (https://archive.apache.org/dist/maven/maven-3/3.9.3/binaries/) ou plus
+> Un fichier `.env` doit être présent à la racine du dépôt (variables `DB_*`, `DB_ROOT_PASSWORD`,
+> `TOKEN_SECRET`). Voir `back/.env.example` pour les clés attendues.
 
-## Démarrage du back
-Pour démarrer le back, il :
-- démarrer Docker-Desktop sur votre poste de travail local.
-- lancer une console, se placer à la racine du projet et exécuter la commande Maven :
-```
-mvn spring-boot:run
-```
-Cette commande va :
-- initialiser le container Docker qui contient la base de données
-- lancer l'application back et le connecter à la base de données précédemment créée
+## Lancer le projet
 
-Les traces logs devraient ressemblées à ceci :
-```
-  .   ____          _            __ _ _
- /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
-( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
- \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
-  '  |____| .__|_| |_|_| |_\__, | / / / /
- =========|_|==============|___/=/_/_/_/
+Depuis la **racine du dépôt** :
 
- :: Spring Boot ::                (v3.5.5)
-
-[back] [           main] c.o.s.SpringBootSecurityJwtApplication   : Starting SpringBootSecurityJwtApplication using Java 21.0.3 with PID 15152
-[back] [           main] c.o.s.SpringBootSecurityJwtApplication   : No active profile set, falling back to 1 default profile: "default"
-[back] [           main] .s.b.d.c.l.DockerComposeLifecycleManager : Using Docker Compose file E:\dev\workspaces\missionOC\projet-p4\back\compose.yaml
-[back] [utReader-stderr] o.s.boot.docker.compose.core.DockerCli   :  Container back_mysql  Created
-[back] [utReader-stderr] o.s.boot.docker.compose.core.DockerCli   :  Container back_mysql  Starting
-[back] [utReader-stderr] o.s.boot.docker.compose.core.DockerCli   :  Container back_mysql  Started
-[back] [utReader-stderr] o.s.boot.docker.compose.core.DockerCli   :  Container back_mysql  Waiting
-[back] [utReader-stderr] o.s.boot.docker.compose.core.DockerCli   :  Container back_mysql  Healthy
-[back] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-[back] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 58 ms. Found 3 JPA repository interfaces.
-[back] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
-[back] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-[back] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.44]
-[back] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-[back] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1360 ms
-[back] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-[back] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.26.Final
-[back] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-[back] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-[back] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-[back] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@16cb6f51
-[back] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-[back] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
-	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
-	Database driver: undefined/unknown
-	Database version: 9.1
-	Autocommit mode: undefined/unknown
-	Isolation level: undefined/unknown
-	Minimum pool size: undefined/unknown
-	Maximum pool size: undefined/unknown
-[back] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-[back] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-[back] [           main] eAuthenticationProviderManagerConfigurer : Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
-[back] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
-[back] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-[back] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
-[back] [           main] c.o.s.SpringBootSecurityJwtApplication   : Started SpringBootSecurityJwtApplication in 10.354 seconds (process running for 11.197)
+```bash
+make up      # démarre MySQL + backend (+ frontend)
+make seed    # insère l'utilisateur admin par défaut
 ```
 
-Sur Docker-Desktop, vous devriez voir apparaître un container MySQL qui correspond au projet.
+Services disponibles :
+- Backend : http://localhost:8080
+- MySQL : localhost:3306
 
-![1-docker-desktop](pictures/1-docker-desktop.png)
+Identifiants de l'utilisateur admin créé par `make seed` :
+- login : `yoga@studio.com`
+- password : `test!1234`
 
-Vous pouvez vous connecter à la base de données et vérifier que la table ```USERS``` a été créée.
-Pour cela, cliquez sur le lien `back_mysql` ce qui vous amènera sur la vue complète de la base de données.
-Dans l'onglet ```Exec```, il faut :
+Autres commandes utiles :
 
-1. se connecter à la base de données. Tapez la commande ci-dessous
-
-    ```
-    mysql -u user_test -p
-    ```
-   L'invite de commande demandera le mot de passe. Il est : ```test_password```.
-
-
-2. Se connecter au schéma de base de données `test`. Dans l'invite de commande, tapez la commande ci-dessous :
-
-    ```
-    use test;
-    ```
-
-3. Copier le contenu du fichier `ressources/sql/insert_user.sql` et l'exécuter dans l'invite de commande :
-
-    ```
-    INSERT INTO users(first_name, last_name, admin, email, password) VALUES ('Admin', 'Admin', true, 'yoga@studio.com', '$2a$10$.Hsa/ZjUVaHqi0tp9xieMeewrnZxrZ5pQRzddUXE/WjDu2ZThe6Iq');
-    ```
-   
-3. Vérifier le contenu de la table `users`.
-
-    ```
-    select * from users;
-    ```
-   Le résultat devrait afficher les données de l'utilisateur inséré précédemment.
-   
-   Ce script crée l'utilisateur admin par défaut :
-
-   - login: yoga@studio.com
-   - password: test!1234
-
-La capture d'écran ci-dessous résume les étapes précédentes :
-
-![2-docker-desktop-bdd](pictures/2-docker-desktop-bdd.png)
-
-
-## Tests
-
-Les tests utilisent **JUnit 5 + Mockito** (tests unitaires) et **Spring Boot Test + MockMvc**
-(tests d'intégration). Les tests d'intégration s'appuient sur une base **H2 en mémoire**
-(profil `test`) : **aucune base MySQL ni Docker n'est nécessaire pour les lancer**.
-
-### Lancer les tests
-
-Depuis le dossier `back/` :
-
-```
-mvn clean test
+```bash
+make logs    # suivre les logs
+make down    # arrêter la stack
 ```
 
-Cette commande exécute l'ensemble des tests unitaires **et** d'intégration.
+## Lancer les tests du back
 
-Pour exécuter en plus la vérification du seuil de couverture (échoue si < 80 %) :
+Tests unitaires (JUnit 5 + Mockito) et d'intégration (Spring Boot Test + MockMvc).
+Les tests d'intégration utilisent une base **H2 en mémoire** : aucune base MySQL ni stack
+démarrée n'est requise.
 
+Depuis la **racine du dépôt** :
+
+```bash
+make test-back
 ```
-mvn clean verify
-```
 
-> Si Maven n'est pas installé localement, vous pouvez utiliser l'image Docker officielle :
-> ```
-> docker run --rm -v "$PWD":/app -v oc-maven-repo:/root/.m2 -w /app \
->   maven:3.9-eclipse-temurin-21 mvn -B clean verify
-> ```
-
-### Générer et consulter le rapport de couverture
-
-Le rapport **JaCoCo** est généré automatiquement lors de la phase `test`. Après un
-`mvn clean test` (ou `verify`), ouvrez :
+Cette commande exécute tous les tests dans un conteneur Maven jetable, puis génère le
+rapport de couverture **JaCoCo** :
 
 ```
 back/target/site/jacoco/index.html
 ```
 
-Le rapport détaille la couverture (instructions, branches, lignes, etc.) par package
-et par classe. Le package `dto` est volontairement exclu de la mesure ; le code généré
-par Lombok est ignoré (annotation `@Generated`).
+> `make test` lance l'ensemble des suites du projet (back + front unitaire + e2e).
 
 ## Ressources
 
-
 ### Collection Postman
 
-Importez la collection Postman
+Importez la collection Postman :
 
 > postman/yoga.postman_collection.json
 
-La documentation de Postman se trouve ici :
-
+Documentation Postman :
 https://learning.postman.com/docs/getting-started/importing-and-exporting-data/#importing-data-into-postman

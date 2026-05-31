@@ -1,48 +1,66 @@
-# Yoga
+# Yoga App — Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.16.
+Frontend de l'application Yoga App (Angular 19).
 
-## Start the project
+- port : 4200
 
-Git clone:
+## Prérequis
 
-> git clone https://github.com/OpenClassrooms-Student-Center/P5-Full-Stack-testing
+- **Docker** et **Docker Compose**
+- **Make**
 
-Go inside folder:
+Tout (build, exécution, tests) passe par Docker via le `Makefile` situé à la racine du dépôt :
+aucune installation locale de Node ni d'Angular CLI n'est nécessaire.
 
-> cd yoga
+> Un fichier `.env` doit être présent à la racine du dépôt (voir `back/.env.example`).
 
-Install dependencies:
+## Lancer le projet
 
-> npm install
+Depuis la **racine du dépôt** :
 
-Launch Front-end:
+```bash
+make up      # démarre MySQL + backend + frontend
+make seed    # insère l'utilisateur admin par défaut
+```
 
-> npm run start;
+Application disponible sur : http://localhost:4200
 
+Identifiants de l'utilisateur admin créé par `make seed` :
+- login : `yoga@studio.com`
+- password : `test!1234`
 
-### Test
+Autres commandes utiles :
 
-#### E2E
+```bash
+make logs    # suivre les logs
+make down    # arrêter la stack
+```
 
-Launching e2e test:
+## Lancer les tests
 
-> npm run e2e
+Toutes les commandes s'exécutent dans des conteneurs jetables, depuis la **racine du dépôt**.
 
-Generate coverage report (you should launch e2e test before):
+### Tests unitaires et d'intégration (Jest)
 
-> npm run e2e:coverage
+```bash
+make test-front
+```
 
-Report is available here:
+Rapport de couverture :
 
-> front/coverage/lcov-report/index.html
+```
+front/coverage/jest/lcov-report/index.html
+```
 
-#### Unitary test
+### Tests end-to-end (Cypress)
 
-Launching test:
+```bash
+make test-e2e
+```
 
-> npm run test
+Cette commande lance l'application instrumentée puis Cypress, et produit :
+- la **couverture e2e** : `front/coverage/lcov-report/index.html`
+- le **rapport d'exécution** (mochawesome) : `front/cypress/reports/index.html`
 
-for following change:
-
-> npm run test:watch
+> Les sélecteurs des tests Cypress s'appuient sur des attributs `data-testid`.
+> `make test` lance l'ensemble des suites du projet (back + front unitaire + e2e).
