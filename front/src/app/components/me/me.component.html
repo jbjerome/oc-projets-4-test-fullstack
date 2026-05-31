@@ -2,7 +2,7 @@
   <mat-card>
     <mat-card-title>
       <div fxLayout="row" fxLayoutAlign="start center">
-        <button mat-icon-button (click)="back()">
+        <button mat-icon-button (click)="back()" data-testid="me-back">
           <mat-icon>arrow_back</mat-icon>
         </button>
         <h1>User information</h1>
@@ -11,14 +11,14 @@
     <mat-card-content>
       @if (user$ | async; as user) {
         <div fxLayout="column" fxLayoutAlign="start center">
-          <p>Name: {{ user.firstName }} {{ user.lastName | uppercase }}</p>
-          <p>Email: {{ user.email }}</p>
+          <p data-testid="me-name">Name: {{ user.firstName }} {{ user.lastName | uppercase }}</p>
+          <p data-testid="me-email">Email: {{ user.email }}</p>
           @if (user.admin) {
-            <p class="my2">You are admin</p>
+            <p class="my2" data-testid="me-admin">You are admin</p>
           } @else {
             <div fxLayout="column" class="my2" fxLayoutAlign="center center">
               <p>Delete my account:</p>
-              <button mat-raised-button color="warn" (click)="delete()">
+              <button mat-raised-button color="warn" (click)="delete()" data-testid="me-delete">
                 <mat-icon>delete</mat-icon>
                 <span class="ml1">Detail</span>
               </button>

@@ -1,43 +1,44 @@
-// ***********************************************
-// This example namespace declaration will help
-// with Intellisense and code completion in your
-// IDE or Text Editor.
-// ***********************************************
-// declare namespace Cypress {
-//   interface Chainable<Subject = any> {
-//     customCommand(param: any): typeof customCommand;
-//   }
-// }
+/// <reference types="cypress" />
+
+// Commandes personnalisées Cypress.
 //
-// function customCommand(param: any): void {
-//   console.warn(param);
-// }
-//
-// NOTE: You can use it like so:
-// Cypress.Commands.add('customCommand', customCommand);
-//
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add("login", (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add("dismiss", { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+// cy.loginAs(admin) : intercepte l'appel de login et réalise la connexion via
+// le formulaire, puis attend la redirection vers /sessions. Le stub de
+// GET /api/session doit être défini par le test AVANT l'appel à loginAs.
+
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace Cypress {
+    interface Chainable {
+      /**
+       * Connecte un utilisateur (admin par défaut) en passant par le formulaire de login.
+       * @param admin true pour un compte admin, false sinon.
+       */
+      loginAs(admin?: boolean): Chainable<void>;
+    }
+  }
+}
+
+Cypress.Commands.add('loginAs', (admin: boolean = true) => {
+  cy.intercept('POST', '/api/auth/login', {
+    statusCode: 200,
+    body: {
+      token: 'fake-jwt-token',
+      type: 'Bearer',
+      id: 1,
+      username: 'yoga@studio.com',
+      firstName: 'Admin',
+      lastName: 'User',
+      admin,
+    },
+  }).as('login');
+
+  cy.visit('/login');
+  cy.get('[data-testid=login-email]').type('yoga@studio.com');
+  cy.get('[data-testid=login-password]').type('test!1234');
+  cy.get('[data-testid=login-submit]').click();
+  cy.wait('@login');
+  cy.url().should('include', '/sessions');
+});
+
+export {};

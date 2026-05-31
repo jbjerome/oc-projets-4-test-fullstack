@@ -121,6 +121,47 @@ La capture d'écran ci-dessous résume les étapes précédentes :
 ![2-docker-desktop-bdd](pictures/2-docker-desktop-bdd.png)
 
 
+## Tests
+
+Les tests utilisent **JUnit 5 + Mockito** (tests unitaires) et **Spring Boot Test + MockMvc**
+(tests d'intégration). Les tests d'intégration s'appuient sur une base **H2 en mémoire**
+(profil `test`) : **aucune base MySQL ni Docker n'est nécessaire pour les lancer**.
+
+### Lancer les tests
+
+Depuis le dossier `back/` :
+
+```
+mvn clean test
+```
+
+Cette commande exécute l'ensemble des tests unitaires **et** d'intégration.
+
+Pour exécuter en plus la vérification du seuil de couverture (échoue si < 80 %) :
+
+```
+mvn clean verify
+```
+
+> Si Maven n'est pas installé localement, vous pouvez utiliser l'image Docker officielle :
+> ```
+> docker run --rm -v "$PWD":/app -v oc-maven-repo:/root/.m2 -w /app \
+>   maven:3.9-eclipse-temurin-21 mvn -B clean verify
+> ```
+
+### Générer et consulter le rapport de couverture
+
+Le rapport **JaCoCo** est généré automatiquement lors de la phase `test`. Après un
+`mvn clean test` (ou `verify`), ouvrez :
+
+```
+back/target/site/jacoco/index.html
+```
+
+Le rapport détaille la couverture (instructions, branches, lignes, etc.) par package
+et par classe. Le package `dto` est volontairement exclu de la mesure ; le code généré
+par Lombok est ignoré (annotation `@Generated`).
+
 ## Ressources
 
 

@@ -4,26 +4,26 @@
       <mat-card-title>
         <div fxLayout="row" fxLayoutAlign="space-between center">
           <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-icon-button (click)="back()">
+            <button mat-icon-button (click)="back()" data-testid="detail-back">
               <mat-icon>arrow_back</mat-icon>
             </button>
-            <h1>{{vm.session.name | titlecase}}</h1>
+            <h1 data-testid="detail-name">{{vm.session.name | titlecase}}</h1>
           </div>
           <div>
             @if (isAdmin) {
-              <button mat-raised-button color="warn" (click)="delete()">
+              <button mat-raised-button color="warn" (click)="delete()" data-testid="detail-delete">
                 <mat-icon>delete</mat-icon>
                 <span class="ml1">Delete</span>
               </button>
             } @else {
               <div>
                 @if (vm.isParticipate) {
-                  <button mat-raised-button color="warn" (click)="unParticipate()">
+                  <button mat-raised-button color="warn" (click)="unParticipate()" data-testid="detail-unparticipate">
                     <mat-icon>person_remove</mat-icon>
                     <span class="ml1">Do not participate</span>
                   </button>
                 } @else {
-                  <button mat-raised-button color="primary" (click)="participate()">
+                  <button mat-raised-button color="primary" (click)="participate()" data-testid="detail-participate">
                     <mat-icon>person_add</mat-icon>
                     <span class="ml1">Participate</span>
                   </button>
@@ -50,7 +50,7 @@
             <mat-icon>
               group
             </mat-icon>
-            <span class="ml1">{{ vm.session.users.length }} attendees</span>
+            <span class="ml1" data-testid="detail-attendees">{{ vm.session.users.length }} attendees</span>
           </div>
           <div fxLayoutAlign="start center">
             <mat-icon>
@@ -59,7 +59,7 @@
             <span class="ml1">{{ vm.session.date | date: 'longDate'}}</span>
           </div>
         </div>
-        <div class="description">
+        <div class="description" data-testid="detail-description">
           <p>Description:</p>
           {{ vm.session.description }}
           <br>
