@@ -1,6 +1,5 @@
-.PHONY: up rebuild down logs ps build restart seed clean prune ng-build test test-back test-front test-e2e test-e2e-down
+.PHONY: up rebuild down logs ps build restart seed clean prune ng-build test test-back test-front test-e2e
 
-E2E_COMPOSE := docker compose -f docker-compose.yml -f docker-compose.e2e.yml
 MAVEN_IMAGE := maven:3.9-eclipse-temurin-21
 MAVEN_CACHE := oc-maven-repo
 
@@ -52,19 +51,21 @@ test-front:
 	@echo ""
 	@echo "  Rapport Jest : front/coverage/jest/lcov-report/index.html"
 
-# Tests end-to-end (Cypress) avec couverture et rapport d'exécution mochawesome.
+# Tests end-to-end (Cypress) avec couverture + rapport d'exécution mochawesome.
+# Exécuté sur l'hôte (Node + Chrome requis) : collecte de couverture istanbul fiable.
+# Purge la couverture e2e précédente pour éviter tout mélange de runs.
 test-e2e:
-	$(E2E_COMPOSE) --profile e2e up --build --abort-on-container-exit --exit-code-from cypress
-	$(E2E_COMPOSE) --profile e2e down
+	[ -d front/node_modules ] || (cd front && npm ci)
+	cd front && rm -rf .nyc_output coverage/lcov-report coverage/lcov.info \
+		coverage/clover.xml coverage/coverage-final.json coverage/coverage-summary.json
+	cd front && npm run e2e:ci
+	cd front && npm run e2e:coverage
 	@echo ""
 	@echo "  Couverture E2E  : front/coverage/lcov-report/index.html"
 	@echo "  Rapport Cypress : front/cypress/reports/index.html"
 
 # Lance l'ensemble des suites (back, front unit, e2e) en une commande.
 test: test-back test-front test-e2e
-
-test-e2e-down:
-	$(E2E_COMPOSE) --profile e2e down -v
 
 prune:
 	docker image prune -f

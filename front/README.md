@@ -58,6 +58,9 @@ front/coverage/jest/lcov-report/index.html
 make test-e2e
 ```
 
+> Exécuté sur l'hôte (nécessite **Node** et **Chrome** ; `npm ci` est lancé automatiquement
+> si `node_modules` est absent) afin que la collecte de couverture istanbul soit fiable.
+
 Cette commande lance l'application instrumentée puis Cypress, et produit :
 - la **couverture e2e** : `front/coverage/lcov-report/index.html`
 - le **rapport d'exécution** (mochawesome) : `front/cypress/reports/index.html`
