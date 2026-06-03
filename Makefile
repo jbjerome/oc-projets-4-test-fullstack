@@ -53,8 +53,11 @@ test-front:
 
 # Tests end-to-end (Cypress) avec couverture + rapport d'exécution mochawesome.
 # Exécuté sur l'hôte (Node + Chrome requis) : collecte de couverture istanbul fiable.
+# Arrête le conteneur frontend : il occupe le port 4200 avec un build non instrumenté,
+# alors que e2e:ci doit y servir le build e2e instrumenté (yoga:serve-coverage).
 # Purge la couverture e2e précédente pour éviter tout mélange de runs.
 test-e2e:
+	docker compose stop frontend
 	[ -d front/node_modules ] || (cd front && npm ci)
 	cd front && rm -rf .nyc_output coverage/lcov-report coverage/lcov.info \
 		coverage/clover.xml coverage/coverage-final.json coverage/coverage-summary.json
